@@ -323,7 +323,12 @@ public class DruidPooledConnection extends PoolableWrapper implements javax.sql.
         boolean poolPreparedStatements = holder.isPoolPreparedStatements();
 
         if (poolPreparedStatements) {
-            stmtHolder = holder.getStatementPool().get(key);
+            try {
+                stmtHolder = holder.getStatementPool().get(key);
+            } catch (SQLException e) {
+        		// resolve exception
+        		handleException(e);
+        	}
         }
 
         if (stmtHolder == null) {
